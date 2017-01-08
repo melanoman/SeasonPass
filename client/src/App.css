@@ -1,0 +1,124 @@
+.App {
+}
+
+.App-header {
+  background-color: #000000;
+  height: 70px;
+  padding: 20px;
+  color: white;
+  text-align: center;
+}
+
+.league-list {
+}
+
+.indent-1 {
+  margin-left: 20px;
+}
+
+.indent-2 {
+  margin-left: 40px;
+}
+
+.rtext {
+  text-align: right;
+}
+
+.ltext {
+  text-align: left;
+}
+
+.ctext {
+  text-align: center;
+}
+
+.pad-1 {
+  padding: 3px;
+}
+
+.pad-2 {
+  padding: 10px;
+}
+
+.pad-b1 {
+  padding-bottom: 8px;
+}
+ul {
+  list-style-type: none;
+}
+
+.blue {
+  color: blue;
+}
+
+.grey {
+  color: gray;
+}
+
+.yellow-back {
+  background-color: yellow;
+}
+
+.modebar {
+  float: left;
+  top: 70;
+}
+
+.zoom {
+  float: right;
+  min-width: 60%;
+}
+
+.main {
+  padding-left: 70px;
+}
+
+.chooser-selected {
+    background-color: #4CAF50; /* GREEN */
+    border: none;
+    color: white;
+    padding: 8px 15px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    border-radius: 12px;
+    cursor: pointer;
+}
+.chooser { /* button */
+    background-color: #008CBA; /* BLUE */
+    border: none;
+    color: white;
+    padding: 8px 15px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    border-radius: 12px;
+    cursor: pointer;
+}
+
+.chooser-wrap { /* DIV */
+    padding: 3px 3px;
+}
+
+.header-A {
+    padding-top: 10px;
+}
+
+.header-B {
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+.peekaboo .street {
+  visibility:hidden;
+}
+
+.peekaboo:hover .street {
+  visibility:visible;
+}
+
+.driver-list {
+  margin-bottom: 10px;
+}

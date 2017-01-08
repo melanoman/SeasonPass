@@ -1,0 +1,16 @@
+{
+  "name": "season-pass-server",
+  "version": "0.1.1",
+  "description": "Simple Rest Server for recording Formula Dé Season Pass information.",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Mel Nicholson",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.15.2",
+    "express": "^4.14.0",
+    "mongoose": "^4.7.4"
+  }
+}
