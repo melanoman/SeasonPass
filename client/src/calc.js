@@ -83,9 +83,11 @@ var Calc = {
         if(r.results && r.results.length > 0) {
           var score_list = Score[r.results.length];
           r.results.forEach((x,i) => {
+            var xp = x.finished ? 2 : 1;
             if (x.injury && x.injury > 0) {
               result.team[x.team_id].driver[x.driver_id].recovery = click + x.injury;
               result.team[x.team_id].driver[x.driver_id].injuries += 1;
+              xp -= x.injury;
             }
             var score = score_list[i];
             if (r.finished) { score += 5; }
@@ -93,7 +95,6 @@ var Calc = {
             result.team[x.team_id].driver[x.driver_id].score += score;
             result.team[x.team_id].season[x.season_id].score += score;
             result.team[x.team_id].driver[x.driver_id].season[x.season_id].score += score;
-            var xp = x.finished ? 2 : 1;
             result.team[x.team_id].driver[x.driver_id].xp += xp;
             if(result.team[x.team_id].driver[x.driver_id].year === 0) result.team[x.team_id].driver[x.driver_id].year = year;
             agers[10000*x.team_id + x.driver_id] = { team_id: x.team_id, driver_id: x.driver_id }
