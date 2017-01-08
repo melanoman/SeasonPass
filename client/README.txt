@@ -1,3 +1,5 @@
+[0] Don't sue me
+
 This software is licensed under the terms set forth in LICENSE.txt
 and comes with nothing remotely resembling a guarantee. For example,
 if you made a big wager on a SeasonPass game and used this software
@@ -27,4 +29,26 @@ you don't get a response in a timely fashion (or at all). People
 who phrase their suggestions in the form of a pull request have a
 seriously higher chance of being listened to.
 
+[1] Installation
 
+* Install Mongo and Node (with npm) 
+* cd server
+* npm install
+* cd ../client
+* npm install
+
+[2] Starting the server
+
+Mongo Window:
+
+mongod
+
+Backend Window:
+
+cd server
+node server.js
+
+Frontend Window:
+
+cd client
+npm start
