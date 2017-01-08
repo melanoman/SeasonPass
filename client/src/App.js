@@ -647,8 +647,8 @@ class DriverStanding extends Component {
     var driver_id = this.props.driver.driver_id;
 
     return (<tr>
-      <td><i className="fa fa-group pad-1 indent-1" />{this.props.driver.name}</td>
-      <td><i className="fa fa-user-circle pad-1 indent-1" />{this.props.team.name}</td>
+      <td><i className="fa fa-user-circle pad-1 indent-1" />{this.props.driver.name}</td>
+      <td><i className="fa fa-group pad-1 indent-1" />{this.props.team.name}</td>
       {this.props.seasons.map(x => {
         return <td key={x._id} className="ctext">{calc.points4driver(league_id, x.season_id, team_id, driver_id)}</td>
       }) }
