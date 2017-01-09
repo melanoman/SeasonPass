@@ -24,7 +24,7 @@ var Level = {
   lev: ['Retired', 'Rookie', 'Veteran', 'Champion', 'Legend', 'Icon'],
   xp2lev: (xp) => {
     var i=Level.req.length;
-    while(i>0) {
+    while(i > 0) {
       i -= 1;
       if(xp >= Level.req[i]) { return Level.lev[i]; }
     }
@@ -56,7 +56,7 @@ var Calc = {
         dh.name = d.name;
         dh.score = 0;
         dh.xp = 0;
-        dh.year = 0;
+        dh.age = 1;
         dh.injuries = 0;
         dh.season = {};
         league.seasons.forEach(x => { dh.season[x.season_id] = {}; dh.season[x.season_id].score = 0; });
@@ -65,7 +65,7 @@ var Calc = {
     })
     result.season = {};
     var agers = {};
-    league.seasons.forEach((s,year) => {
+    league.seasons.forEach(s => {
       var complete = true;
       var sh = {};
       sh.race = {};
@@ -87,7 +87,7 @@ var Calc = {
             if (x.injury && x.injury > 0) {
               result.team[x.team_id].driver[x.driver_id].recovery = click + x.injury;
               result.team[x.team_id].driver[x.driver_id].injuries += 1;
-              xp -= x.injury;
+              xp -= x.injury + result.team[x.team_id].driver[x.driver_id].injuries + result.team[x.team_id].driver[x.driver_id].age;
             }
             var score = score_list[i];
             if (r.finished) { score += 5; }
@@ -96,7 +96,7 @@ var Calc = {
             result.team[x.team_id].season[x.season_id].score += score;
             result.team[x.team_id].driver[x.driver_id].season[x.season_id].score += score;
             result.team[x.team_id].driver[x.driver_id].xp += xp;
-            if(result.team[x.team_id].driver[x.driver_id].year === 0) result.team[x.team_id].driver[x.driver_id].year = year;
+            result.team[x.team_id].driver[x.driver_id].age += 1;
             agers[10000*x.team_id + x.driver_id] = { team_id: x.team_id, driver_id: x.driver_id }
           })
         } else {
@@ -106,7 +106,7 @@ var Calc = {
       if (complete) { for (var code in agers) {
         if(code[0] === '_') {continue}
         var x = agers[code];
-        var years = year - result.team[x.team_id].driver[x.driver_id].year;
+        var years = result.team[x.team_id].driver[x.driver_id].age - 1;
         if(years > 4) { years = 4; }
         var injuries = Calc.convertInjuryCount(result.team[x.team_id].driver[x.driver_id].injuries)
         var penalty = Age[injuries][years];
@@ -166,7 +166,7 @@ var Calc = {
       Calc.cache[driver.league_id].team[driver.team_id].driver[driver.driver_id] = dh;
       dh.injuries = 0;
       dh.xp = 0;
-      dh.year = 0;
+      dh.age = 1;
     }
     dh.name = driver.name;
   },
