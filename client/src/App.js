@@ -721,11 +721,12 @@ class DriverList extends Component {
 class DriverRow extends Component {
   render() {
     var go = (x,y) => this.props.app.renameDriver(x,y);
-    var recovery = calc.driverReturn(this.props.driver);
+    var driver = this.props.driver;
+    var recovery = calc.driverReturn(driver);
     var icon = (recovery) ? "pad-1 fa fa-medkit fa-lg" : "pad-1 fa fa-user-circle-o fa-lg";
     return (<tr>
-      <td><NameEditor thing={this.props.driver} icon={icon} wrap="driver-display peekaboo" callback={go} /></td>
-      {recovery ? <td className="indent-2"><i className="fa fa-automobile fa-lg pad-1" />{recovery.name}</td> : <td>{calc.lev4driver(this.props.driver)}</td> }
+      <td><NameEditor thing={driver} icon={icon} wrap="driver-display peekaboo" callback={go} /></td>
+      {recovery ? <td className="indent-2"><i className="fa fa-automobile fa-lg pad-1" />{recovery.name}</td> : <td>{calc.lev4driver(driver)}({calc.xp4driver(driver)})</td> }
     </tr>);
   }
 }
