@@ -73,6 +73,7 @@ var Calc = {
       s.races.forEach(r => {
         var rh = {};
         var byes = r.byes ? r.byes : 0;
+        var mult = r.mult;
         sh.race[r.race_id] = rh;
         click = click + 1 + byes;
         rh.click = click;
@@ -89,7 +90,7 @@ var Calc = {
               result.team[x.team_id].driver[x.driver_id].injuries += 1;
               xp -= x.injury + result.team[x.team_id].driver[x.driver_id].injuries + result.team[x.team_id].driver[x.driver_id].age;
             }
-            var score = score_list[i];
+            var score = score_list[i] * mult;
             if (r.finished) { score += 5; }
             result.team[x.team_id].score += score;
             result.team[x.team_id].driver[x.driver_id].score += score;
