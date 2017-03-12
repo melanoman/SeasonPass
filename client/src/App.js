@@ -496,7 +496,9 @@ class RaceZoom extends Component {
         <div className="header-B"> <i className="fa fa-2x fa-trophy pad-1" />{this.props.race.name} </div>
         { (g.locked || this.state.nextTeam) ? null : g.league.teams.map(x => <Chooser key={x._id} thing={x} selected={false} callback={() => selectTeam(x)} />) }
         { (g.locked || !this.state.nextTeam || this.state.nextDriver) ? null :
-          this.state.nextTeam.drivers.map(x => <Chooser key={x._id} thing={x} selected={false} callback={() => selectDriver(x)} />)
+            this.state.nextTeam.drivers.map(x => 
+              (calc.driverReturn(x) ? null : <Chooser key={x._id} thing={x} selected={false} callback={() => selectDriver(x)} />)
+            )
         }
         { (g.locked || !this.state.nextTeam || !this.state.nextDriver) ? null :
           <div>
