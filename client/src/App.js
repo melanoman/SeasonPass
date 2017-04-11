@@ -496,7 +496,7 @@ class RaceZoom extends Component {
         <div className="header-B"> <i className="fa fa-2x fa-trophy pad-1" />{this.props.race.name} </div>
         { (g.locked || this.state.nextTeam) ? null : g.league.teams.map(x => <Chooser key={x._id} thing={x} selected={false} callback={() => selectTeam(x)} />) }
         { (g.locked || !this.state.nextTeam || this.state.nextDriver) ? null :
-            this.state.nextTeam.drivers.map(x => 
+            this.state.nextTeam.drivers.map(x =>
               (calc.driverReturn(x) ? null : <Chooser key={x._id} thing={x} selected={false} callback={() => selectDriver(x)} />)
             )
         }
@@ -570,10 +570,12 @@ class TeamStanding extends Component {
   render() {
     var league_id = this.props.team.league_id;
     var team_id = this.props.team.team_id;
-
     return (
       <tr>
         <td><i className="fa fa-group fa-lg pad-1 indent-1" /> {this.props.team.name}</td>
+        {this.props.races.map(x => {
+          return <td key={x._id} className="ctext">{calc.points4team_race(league_id, x.season_id, x.race_id, team_id)}</td>
+        }) }
         {this.props.seasons.map(x => {
           return <td key={x._id} className="ctext">{calc.points4team(league_id, x.season_id, team_id)}</td>
         }) }
@@ -591,12 +593,21 @@ class StandingsDetail extends Component {
     }
   }
 
+  findRaceList(season_id, league) {
+    var result = [];
+    league.seasons.forEach(x => {
+      if(x.season_id === season_id) { result = x.races; }
+    });
+    return result;
+  }
+
   render() {
     var changeLeague = () => this.props.app.setState({league: null, season: null, race: null});
     var season_id = this.state.selected;
     if(this.props.season) { season_id = this.props.season.season_id; }
     var top = this;
     var selected = this.state.selected;
+    var races = this.findRaceList(selected, this.props.league);
 
     return (
       <div className="main">
@@ -605,12 +616,13 @@ class StandingsDetail extends Component {
         <table className="indent-1">
           <thead><tr>
             <th className="ltext">Team</th>
+            { races.map(x => <RaceHeader key={x._id} name={x.name} />) }
             { this.props.league.seasons.map(x => <SeasonHeader key={x._id} name={x.name} selected={x.season_id === selected} sid={x.season_id} parent={top} />) }
             <SeasonHeader name="Total" selected={-1 === selected} sid={-1} parent={top} /></tr></thead>
           <tbody>
             { calc.getSortedTeamList(this.props.league.league_id, season_id).map(x => {
                 var team = this.props.league.teams[x.team_id - 1];
-              return <TeamStanding key={team._id} team={team} seasons={this.props.league.seasons} />
+                return <TeamStanding key={team._id} team={team} seasons={this.props.league.seasons} selected={selected} races={races} />
             }) }
           </tbody>
         </table>
@@ -618,13 +630,14 @@ class StandingsDetail extends Component {
           <thead><tr>
             <th className="ltext">Driver</th>
             <th className="ltext">Team</th>
+            { races.map(x => <RaceHeader key={x._id} name={x.name} />) }
             { this.props.league.seasons.map(x => <SeasonHeader key={x._id} name={x.name} selected={x.season_id === selected} sid={x.season_id} parent={top} />) }
             <SeasonHeader name="Total" selected={-1 === selected} sid={-1} parent={top} /></tr></thead>
           <tbody>
             { calc.getSortedDriverList(this.props.league.league_id, season_id).map(x => {
                 var driver=this.props.league.teams[x.team_id - 1].drivers[x.driver_id - 1];
                 var team=this.props.league.teams[x.team_id - 1];
-                return <DriverStanding key={driver._id} driver={driver} team={team} seasons={this.props.league.seasons} />
+                return <DriverStanding key={driver._id} driver={driver} team={team} seasons={this.props.league.seasons} selected={selected} races={races} />
             }) }
           </tbody>
         </table>
@@ -642,6 +655,12 @@ class SeasonHeader extends Component {
   }
 }
 
+class RaceHeader extends Component {
+  render() {
+    return (<th><span className="ctext">{this.props.name.substring(0,10)}</span></th>);
+  }
+}
+
 class DriverStanding extends Component {
   render() {
     var league_id = this.props.team.league_id;
@@ -651,6 +670,9 @@ class DriverStanding extends Component {
     return (<tr>
       <td><i className="fa fa-user-circle pad-1 indent-1" />{this.props.driver.name}</td>
       <td><i className="fa fa-group pad-1 indent-1" />{this.props.team.name}</td>
+      {this.props.races.map(x => {
+        return <td key={x._id} className="ctext">{calc.points4driver_race(league_id, x.season_id, x.race_id, team_id, driver_id)}</td>
+      }) }
       {this.props.seasons.map(x => {
         return <td key={x._id} className="ctext">{calc.points4driver(league_id, x.season_id, team_id, driver_id)}</td>
       }) }

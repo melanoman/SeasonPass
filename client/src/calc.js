@@ -48,7 +48,17 @@ var Calc = {
       th.driver = {};
       th.score = 0;
       th.season = {}
-      league.seasons.forEach(x => { th.season[x.season_id] = {}; th.season[x.season_id].score = 0; });
+      league.seasons.forEach(x => {
+        var sh = {};
+        sh.race = {};
+        th.season[x.season_id] = sh;
+        th.season[x.season_id].score = 0;
+        x.races.forEach(r => {
+          var rh = {}
+          rh.score = 0;
+          sh.race[r.race_id] = rh;
+        })
+      });
       team[t.team_id] = th;
 
       t.drivers.forEach(d => {
@@ -59,7 +69,17 @@ var Calc = {
         dh.age = 1;
         dh.injuries = 0;
         dh.season = {};
-        league.seasons.forEach(x => { dh.season[x.season_id] = {}; dh.season[x.season_id].score = 0; });
+        league.seasons.forEach(s => {
+          var shd = {};
+          shd.race = {};
+          dh.season[s.season_id] = shd;
+          dh.season[s.season_id].score = 0;
+          s.races.forEach(r => {
+            var rh = {}
+            rh.score = 0;
+            shd.race[r.race_id] = rh;
+          })
+        });
         th.driver[d.driver_id] = dh;
       })
     })
@@ -95,6 +115,8 @@ var Calc = {
             result.team[x.team_id].score += score;
             result.team[x.team_id].driver[x.driver_id].score += score;
             result.team[x.team_id].season[x.season_id].score += score;
+            result.team[x.team_id].season[x.season_id].race[x.race_id].score += score;
+            result.team[x.team_id].driver[x.driver_id].season[x.season_id].race[x.race_id].score += score;
             result.team[x.team_id].driver[x.driver_id].season[x.season_id].score += score;
             result.team[x.team_id].driver[x.driver_id].xp += xp;
             result.team[x.team_id].driver[x.driver_id].age += 1;
@@ -195,6 +217,16 @@ var Calc = {
     else { return Calc.cache[league_id].team[team_id].season[season_id].score }
   },
 
+  points4driver_race: (league_id, season_id, race_id, team_id, driver_id) => {
+    if(season_id === -1) { return Calc.cache[league_id].team[team_id].driver[driver_id].score }
+    else { return Calc.cache[league_id].team[team_id].driver[driver_id].season[season_id].race[race_id].score }
+  },
+
+  points4team_race: (league_id, season_id, race_id, team_id) => {
+    if(season_id === -1) { return Calc.cache[league_id].team[team_id].score }
+    else { return Calc.cache[league_id].team[team_id].season[season_id].race[race_id].score }
+  },
+
   driverReturn: (driver) => {
     var date = Calc.getRecovery(driver);
     if (!date || date < Calc.cache[driver.league_id].now) { return undefined; }
@@ -210,6 +242,8 @@ var calc = {
   driverReturn: (driver) => Calc.driverReturn(driver),
   points4team: (league_id, season_id, team_id) => Calc.points4team(league_id, season_id, team_id),
   points4driver: (league_id, season_id, team_id, driver_id) => Calc.points4driver(league_id, season_id, team_id, driver_id),
+  points4team_race: (league_id, season_id, race_id, team_id) => Calc.points4team_race(league_id, season_id, race_id, team_id),
+  points4driver_race: (league_id, season_id, race_id, team_id, driver_id) => Calc.points4driver_race(league_id, season_id, race_id, team_id, driver_id),
   xp4driver: (driver) => Calc.cache[driver.league_id].team[driver.team_id].driver[driver.driver_id].xp,
   lev4driver:(driver) => Level.xp2lev(calc.xp4driver(driver)),
   nextRace: (league_id) => Calc.cache[league_id].nextRace,
