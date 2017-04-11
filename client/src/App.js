@@ -649,7 +649,7 @@ class StandingsDetail extends Component {
 
 class SeasonHeader extends Component {
   render() {
-    var go = () => this.props.parent.setState({selected: this.props.season_id,selected_race:null});
+    var go = () => this.props.parent.setState({selected: this.props.season_id,selected_race:-1});
     return (<th><span onClick={go} className={this.props.selected ? "yellow-back ctext" : "ctext"} >
       {this.props.name.substring(0,10)}
     </span></th>);

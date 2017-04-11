@@ -156,9 +156,13 @@ var Calc = {
         for (var di in driverMap) {
           if (di[0] !== '_') { raw.push({score: driverMap[di].score, driver_id: di, team_id: ti}) }
         }
-      } else {
+      } else if (race_id === -1) {
         for (di in driverMap) {
           if (di[0] !== '_') { raw.push({score: driverMap[di].season[season_id].score, driver_id: di, team_id: ti}) }
+        }
+      } else {
+        for (di in driverMap) {
+          if (di[0] !== '_') { raw.push({score: driverMap[di].season[season_id].race[race_id].score, driver_id: di, team_id: ti}) }
         }
       }
     }
