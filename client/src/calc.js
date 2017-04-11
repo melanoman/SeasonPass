@@ -146,7 +146,7 @@ var Calc = {
     return 3;
   },
 
-  getSortedDriverList: (league_id, season_id) => {
+  getSortedDriverList: (league_id, season_id, race_id) => {
     var raw = [];
     var teamMap = Calc.cache[league_id].team;
     for (var ti in teamMap) {
@@ -166,7 +166,7 @@ var Calc = {
     return raw;
   },
 
-  getSortedTeamList: (league_id, season_id) => {
+  getSortedTeamList: (league_id, season_id, race_id) => {
     var raw = [];
     var teamMap = Calc.cache[league_id].team;
     if (season_id === -1) {
@@ -247,8 +247,8 @@ var calc = {
   xp4driver: (driver) => Calc.cache[driver.league_id].team[driver.team_id].driver[driver.driver_id].xp,
   lev4driver:(driver) => Level.xp2lev(calc.xp4driver(driver)),
   nextRace: (league_id) => Calc.cache[league_id].nextRace,
-  getSortedTeamList: (league_id, season_id) => Calc.getSortedTeamList(league_id, season_id),
-  getSortedDriverList: (league_id, season_id) => Calc.getSortedDriverList(league_id, season_id)
+  getSortedTeamList: (league_id, season_id, race_id) => Calc.getSortedTeamList(league_id, season_id, race_id),
+  getSortedDriverList: (league_id, season_id, race_id) => Calc.getSortedDriverList(league_id, season_id, race_id)
 }
 
 export {calc};

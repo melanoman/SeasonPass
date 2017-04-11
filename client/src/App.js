@@ -398,7 +398,7 @@ class App extends Component {
               <ResultsDetail league={this.state.league} season={this.state.season} app={this} locked={this.state.locked} /> : null
             }
             { (this.state.league && this.state.standingsMode) ?
-              <StandingsDetail league={this.state.league} season={this.state.season} app={this} locked={this.state.locked} /> : null
+              <StandingsDetail league={this.state.league} season={this.state.season} race={this.state.race} app={this} locked={this.state.locked} /> : null
             }
           </div>
         </div>
@@ -589,7 +589,8 @@ class StandingsDetail extends Component {
   constructor() {
     super();
     this.state = {
-      selected: -1
+      selected: -1,
+      selected_race: -1
     }
   }
 
@@ -604,10 +605,10 @@ class StandingsDetail extends Component {
   render() {
     var changeLeague = () => this.props.app.setState({league: null, season: null, race: null});
     var season_id = this.state.selected;
+    var race_id = this.state.selected_race;
     if(this.props.season) { season_id = this.props.season.season_id; }
     var top = this;
-    var selected = this.state.selected;
-    var races = this.findRaceList(selected, this.props.league);
+    var races = this.findRaceList(season_id, this.props.league);
 
     return (
       <div className="main">
@@ -616,13 +617,13 @@ class StandingsDetail extends Component {
         <table className="indent-1">
           <thead><tr>
             <th className="ltext">Team</th>
-            { races.map(x => <RaceHeader key={x._id} name={x.name} />) }
-            { this.props.league.seasons.map(x => <SeasonHeader key={x._id} name={x.name} selected={x.season_id === selected} sid={x.season_id} parent={top} />) }
-            <SeasonHeader name="Total" selected={-1 === selected} sid={-1} parent={top} /></tr></thead>
+            { races.map(x => <RaceHeader key={x._id} name={x.name} race_id={x.race_id} selected={x.race_id == race_id} parent={top} />) }
+            { this.props.league.seasons.map(x => <SeasonHeader key={x._id} name={x.name} selected={x.season_id === season_id} season_id={x.season_id} parent={top} />) }
+            <SeasonHeader name="Total" selected={-1 === season_id} season_id={-1} parent={top} /></tr></thead>
           <tbody>
-            { calc.getSortedTeamList(this.props.league.league_id, season_id).map(x => {
+            { calc.getSortedTeamList(this.props.league.league_id, season_id, race_id).map(x => {
                 var team = this.props.league.teams[x.team_id - 1];
-                return <TeamStanding key={team._id} team={team} seasons={this.props.league.seasons} selected={selected} races={races} />
+                return <TeamStanding key={team._id} team={team} seasons={this.props.league.seasons} selected={season_id} races={races} />
             }) }
           </tbody>
         </table>
@@ -630,14 +631,14 @@ class StandingsDetail extends Component {
           <thead><tr>
             <th className="ltext">Driver</th>
             <th className="ltext">Team</th>
-            { races.map(x => <RaceHeader key={x._id} name={x.name} />) }
-            { this.props.league.seasons.map(x => <SeasonHeader key={x._id} name={x.name} selected={x.season_id === selected} sid={x.season_id} parent={top} />) }
-            <SeasonHeader name="Total" selected={-1 === selected} sid={-1} parent={top} /></tr></thead>
+            { races.map(x => <RaceHeader key={x._id} name={x.name} race_id={x.race_id} selected={x.race_id === race_id} parent={top} />) }
+            { this.props.league.seasons.map(x => <SeasonHeader key={x._id} name={x.name} selected={x.season_id === season_id} season_id={x.season_id} parent={top} />) }
+            <SeasonHeader name="Total" selected={-1 === season_id} season_id={-1} parent={top} /></tr></thead>
           <tbody>
-            { calc.getSortedDriverList(this.props.league.league_id, season_id).map(x => {
+            { calc.getSortedDriverList(this.props.league.league_id, season_id, race_id).map(x => {
                 var driver=this.props.league.teams[x.team_id - 1].drivers[x.driver_id - 1];
                 var team=this.props.league.teams[x.team_id - 1];
-                return <DriverStanding key={driver._id} driver={driver} team={team} seasons={this.props.league.seasons} selected={selected} races={races} />
+                return <DriverStanding key={driver._id} driver={driver} team={team} seasons={this.props.league.seasons} selected={season_id} races={races} />
             }) }
           </tbody>
         </table>
@@ -648,16 +649,19 @@ class StandingsDetail extends Component {
 
 class SeasonHeader extends Component {
   render() {
-    var go = () => this.props.parent.setState({selected: this.props.sid});
+    var go = () => this.props.parent.setState({selected: this.props.season_id,selected_race:null});
     return (<th><span onClick={go} className={this.props.selected ? "yellow-back ctext" : "ctext"} >
-      {this.props.name}
+      {this.props.name.substring(0,10)}
     </span></th>);
   }
 }
 
 class RaceHeader extends Component {
   render() {
-    return (<th><span className="ctext">{this.props.name.substring(0,10)}</span></th>);
+    var go = () => this.props.parent.setState({selected_race: this.props.race_id});
+    return (<th><span onClick={go} className={this.props.selected ? "yellow-back ctext" : "ctext"} >
+      {this.props.name.substring(0,10)}
+    </span></th>);
   }
 }
 
