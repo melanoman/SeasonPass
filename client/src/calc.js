@@ -177,11 +177,16 @@ var Calc = {
       for (var ti in teamMap) {
         if (ti[0] !== '_') { raw.push({score: teamMap[ti].score, team_id: ti}) }
       }
-    } else {
+    } else if (race_id === -1) {
       for (ti in teamMap) {
         if (ti[0] !== '_') { raw.push({score: teamMap[ti].season[season_id].score, team_id: ti}) }
       }
+    } else {
+      for (ti in teamMap) {
+        if (ti[0] !== '_') { raw.push({score: teamMap[ti].season[season_id].race[race_id].score, team_id: ti}) }
+      }
     }
+
     raw.sort((y,x) => x.score - y.score)
     return raw;
   },
