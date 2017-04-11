@@ -617,7 +617,7 @@ class StandingsDetail extends Component {
         <table className="indent-1">
           <thead><tr>
             <th className="ltext">Team</th>
-            { races.map(x => <RaceHeader key={x._id} name={x.name} race_id={x.race_id} selected={x.race_id == race_id} parent={top} />) }
+            { races.map(x => <RaceHeader key={x._id} name={x.name} race_id={x.race_id} selected={x.race_id === race_id} parent={top} />) }
             { this.props.league.seasons.map(x => <SeasonHeader key={x._id} name={x.name} selected={x.season_id === season_id} season_id={x.season_id} parent={top} />) }
             <SeasonHeader name="Total" selected={-1 === season_id} season_id={-1} parent={top} /></tr></thead>
           <tbody>
